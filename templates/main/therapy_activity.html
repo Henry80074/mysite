@@ -1,0 +1,40 @@
+{% extends 'main/index.html' %}
+<head>
+{% block title %}
+<h1> {{ activity.name }} </h1>
+{% endblock %}
+</head>
+
+<body>
+{% block content %}
+<p> {{ activity.description }}</p>
+
+<div class="container">
+  <div class="row justify-content-md-center pt-5">
+
+    <div class="col-md-7 d-flex justify-content-between"
+      {% if request.user.is_authenticated %}
+
+      {% if fav %}
+      <div>
+        <a href="{% url 'account:favourite_list' %}" class="">Remove
+          Favourites</a>
+      </div>
+      {% else %}
+      <div>
+        <a href="{% url 'account:favourite_add' activity.id %}" class="">Add to
+          Favourites</a>
+      </div>
+      {% endif %}
+
+      {% else %}
+      <div>
+        <a href="{% url 'register:register' %}" class="">Add to
+          Favourites</a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+</body>

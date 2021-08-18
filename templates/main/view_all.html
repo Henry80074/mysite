@@ -1,0 +1,17 @@
+{% extends "main/index.html" %}
+{% block title %}
+    <h1>View All</h1>
+{% endblock %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{% block content %}
+{% for activity in activities %}
+    <div class="col-md-7 d-flex justify-content-between">
+        <li><a href="{{activity.get_absolute_url}}">{{activity.name}}</a> <br> {{activity.description}} </li>
+        <div id="favourite-section"> {% include 'main/favourite_section.html' with activity=activity %} </div>
+    </div>
+{% endfor %}
+{% endblock %}
+
+
+
