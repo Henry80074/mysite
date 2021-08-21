@@ -1,9 +1,11 @@
+
 {% extends "main/index.html" %}
+{% load static %}
 {% block title %}
     <h1>View All</h1>
 {% endblock %}
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 {% block content %}
 {% for activity in activities %}
     <div class="col-md-7 d-flex justify-content-between">
@@ -11,7 +13,35 @@
         <div id="favourite-section"> {% include 'main/favourite_section.html' with activity=activity %} </div>
     </div>
 {% endfor %}
+<head>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function(event){
+
+    $(document).on('click', '#favourite', function(event){
+      console.log("i'm clicked");
+      event.preventDefault();
+      var activity_id = $(this).attr("value");
+      var url = '{% url "account:favourite_unfavourite" %}';
+      $.ajax({
+        type: 'POST',
+        url: url,
+        data: {
+            'activity_id': activity_id,
+            'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
+            },
+        dataType: 'json',
+        success: function(response){
+        console.log('success', response)
+          $('#favourite-section').html(response['form'])
+        },
+        error: function(response){
+          console.log('error', response);
+        },
+      });
+    });
+  });
+</script>
+</head>
+
 {% endblock %}
-
-
-

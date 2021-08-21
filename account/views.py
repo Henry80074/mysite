@@ -61,7 +61,7 @@ def favourite_unfavourite(request):
         activity.favourites.add(request.user)
         is_fav = True
     context = {
-        'Activity': activity,
+        'activity': activity,
         'is_fav': is_fav,
         'value': activity_id
         }
