@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 from main.models import TherapyActivity
+from account.models import Favourite
 from django.template.loader import render_to_string
 from django.contrib.auth.decorators import login_required
 
@@ -49,25 +50,34 @@ def favourite_add(request, id):
 
 
 def favourite_unfavourite(request):
-    html = None
-    #if request.method == 'POST':
-    activity_id = request.POST.get('activity_id')
-    activity = get_object_or_404(TherapyActivity, id=activity_id)
-    is_fav = False
-    if activity.favourites.filter(id=request.user.id).exists():
-        activity.favourites.remove(request.user)
-        is_fav = False
-    else:
-        activity.favourites.add(request.user)
-        is_fav = True
-    context = {
-        'activity': activity,
-        'is_fav': is_fav,
-        'value': activity_id
-        }
-    if request.is_ajax():
-        html = render_to_string('main/favourite_section.html', context, request=request)
-    return JsonResponse({'form': html})
+    #html = None
+    user = request.user
+    if request.method == 'POST':
+        activity_id = request.POST.get('activity_id')
+        activity = get_object_or_404(TherapyActivity, id=activity_id)
+
+        if user in activity.favourites.all():
+            activity.favourites.remove(user)
+        else:
+            activity.favourites.add(user)
+        favourite, created = Favourite.objects.get_or_create(user=user, activity_id=activity_id)
+    if not created:
+        if favourite.value == 'Favourite':
+            favourite.value = 'Unfavourite'
+        else:
+            favourite.value = 'Favourite'
+            activity.save()
+            favourite.save()
+
+        context = {
+            'activity': activity,
+            'is_fav': is_fav,
+            'value': favourite.value
+            }
+        #if request.is_ajax():
+         #   html = render_to_string('main/favourite_section.html', context, request=request)
+        #return JsonResponse({'form': html})
+    return redirect('posts:main-post-view')
 
 
 def logged_out(response):

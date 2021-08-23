@@ -1,11 +1,12 @@
 {% if request.user.is_authenticated %}
-    <form action="{% url 'account:favourite_unfavourite' %}" method="post">
+    <form action="{% url 'account:favourite_unfavourite' %}" method="post" class="'favourite-form" id="activity.id">
         {% csrf_token %}
-        {% if is_fav %}
-            <button type="submit" id="favourite" name="activity_id" value="{{ activity.id }}" class="btn btn-danger">Unfavourite</button>
-        {% else %}
-            <button type="submit" id="favourite" name="activity_id" value="{{ activity.id }}" class="btn btn-primary">Favourite</button>
-        {% endif %}
+            <button type="submit" class="btn btn-danger">
+                {% if user not in activity.favourites.all %}
+                Like
+                {% else %}
+                Unlike
+                {% endif %}
+            </button>
     </form>
-
 {% endif %}

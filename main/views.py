@@ -13,7 +13,12 @@ def index(response):
 def view_all(request):
 
     activities = TherapyActivity.objects.all()
-    context = {'activities': activities}
+    user = request.user
+
+    context = {
+        'activities': activities,
+        'user': user
+    }
     return render(request, 'main/view_all.html', context)
 
 
