@@ -1,7 +1,8 @@
 {% if request.user.is_authenticated %}
     <form action="{% url 'account:favourite_unfavourite' %}" method="post" class="'favourite-form" id="activity.id">
         {% csrf_token %}
-            <button type="submit" class="btn btn-danger">
+        <input type="hidden" name="activity_id" value={{activity.id}}>
+            <button type="submit" class="btn btn-success">
                 {% if user not in activity.favourites.all %}
                 Like
                 {% else %}

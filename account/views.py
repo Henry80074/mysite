@@ -52,6 +52,7 @@ def favourite_add(request, id):
 def favourite_unfavourite(request):
     #html = None
     user = request.user
+
     if request.method == 'POST':
         activity_id = request.POST.get('activity_id')
         activity = get_object_or_404(TherapyActivity, id=activity_id)
@@ -60,7 +61,7 @@ def favourite_unfavourite(request):
             activity.favourites.remove(user)
         else:
             activity.favourites.add(user)
-        favourite, created = Favourite.objects.get_or_create(user=user, activity_id=activity_id)
+        favourite, created = Favourite.objects.get_or_create(user=user, therapy_activity_id=activity_id)#where is therapy_activity_id?
     if not created:
         if favourite.value == 'Favourite':
             favourite.value = 'Unfavourite'
@@ -71,13 +72,13 @@ def favourite_unfavourite(request):
 
         context = {
             'activity': activity,
-            'is_fav': is_fav,
+            'favourite': favourite,
             'value': favourite.value
             }
         #if request.is_ajax():
          #   html = render_to_string('main/favourite_section.html', context, request=request)
         #return JsonResponse({'form': html})
-    return redirect('posts:main-post-view')
+    return redirect('main:view-all')
 
 
 def logged_out(response):
