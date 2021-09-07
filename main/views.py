@@ -1,13 +1,13 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.views.generic import ListView, DetailView
-from .models import UserTherapySession, UserTherapyActivity, TherapyActivity
+from .models import TherapyActivity
 
 # Create your views here.
 
 
 def index(response):
-    return render(response, 'main/index.html')
+    return render(response, 'main/home.html')
 
 
 def view_all(request):

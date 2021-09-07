@@ -12,6 +12,7 @@ class TherapyActivity(models.Model):
     favourites = models.ManyToManyField(
         User, related_name='favourite', default=None, blank=True
     )
+    image = models.ImageField(null=True, blank=True, upload_to='media/')
 
     def get_absolute_url(self):
         return reverse('main:activity_single', args=[self.slug])
@@ -19,13 +20,3 @@ class TherapyActivity(models.Model):
     def __str__(self):
         return self.name
 
-
-class UserTherapySession(models.Model):
-    therapy_list = models.ManyToManyField('UserTherapyActivity')
-    recurrences = recurrence.fields.RecurrenceField()
-
-
-class UserTherapyActivity(models.Model):
-    therapy_activity = models.ForeignKey(TherapyActivity, on_delete=models.CASCADE, default=None)
-    reps = models.IntegerField("reps", default=None)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
