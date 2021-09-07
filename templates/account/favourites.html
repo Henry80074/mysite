@@ -2,38 +2,50 @@
 {% extends "main/index.html" %}
 {% block title %} <h1>User Favourites </h1> {% endblock %}
 {% block content %}
+<head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
 <style>
 </style>
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<div class="card-deck">
-  {% for activity in new %}
-    <div class="w3-card-4">
-        <header class="w3-container w3-blue">
-        <h1>Header</h1>
-        </header>
-            <a class="text-dark" href="{% url 'main:activity_single' activity.slug %}">
-                        <div class="card-body">
-                            <h2 style="font-size:18px;font-weight:bold">{{activity.name}}</h2>
-                            <p class="card-text">{{activity.description}}</p>
-                            {% if activity.image != None %}
-                            <div>
-                                <img src="{{ activity.image.url }}" alt="{{activity.name}}" width="200" height="200">
-                            </div>
-                            {% endif %}
-                                <div id="favourite-section"><a href="{% url 'account:favourite_add' activity.id %}"
-                                        class="btn btn-outline-primary">Remove</a></div>
-                                <div class="column">
-                                <form>
-                                        <p> add to programme: </p><input type="checkbox" id="check">
-                                        <p> reps:<p><input type="text" id="reps" name="reps">
-                                        <p> sets:</p><input type="text" id="sets" name="sets">
-                                </form>
-                                </div>
+<div class="container">
+<div class="row">
+    {% for activity in new %}
+    <div class="col-sm-4 card-space">
+        <div class="card" style="width:300px">
+            <header>
+            <h1>{{activity.name}}</h1>
+            </header>
+                <a class="text-dark" href="{% url 'main:activity_single' activity.slug %}">
+                    <div class="card-body">
+                        <p class="card-text">{{activity.description}}</p>
+                        {% if activity.image != None %}
+                        <div>
+                            <img src="{{ activity.image.url }}" alt="{{activity.name}}" width="200" height="200">
                         </div>
-            </a>
-    </div>
-    </div>
+                        {% endif %}
+                            <div id="favourite-section"><a href="{% url 'account:favourite_add' activity.id %}"
+                                    class="btn btn-outline-primary">Remove</a></div>
+                            <form>
+                                    <p> add to programme: </p><input type="checkbox" id="check">
+                                    <div class="col-sm-6">
+                                        <div class="container">
+                                        <div class="column">
+                                            <p> reps:<p><input type="text" id="reps" name="reps">
+                                            <p> sets:</p><input type="text" id="sets" name="sets">
+                                        </div>
+                                        </div>
+                                    </div>
+                            </form>
+                    </div>
+                </a>
+        </div>
+  </div>
   {% endfor %}
+</div>
 </div>
 {% endblock %}
 
