@@ -10,38 +10,72 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 <style>
+    input[type="checkbox"]{
+  width: 36px; /*Desired width*/
+  height: 36px; /*Desired height*/
+  cursor: pointer;
+}
+.cover {
+  object-fit: cover;
+  width: 200px;
+  height: 200px;
+}
+img {
+  border: 5px solid #87CEFA;
+}
+.form-control {
+   height:36px !important;
+}
 </style>
 <div class="container">
 <div class="row">
     {% for activity in new %}
-    <div class="col-sm-4 card-space">
-        <div class="card" style="width:300px">
-            <header>
-            <h1>{{activity.name}}</h1>
-            </header>
-                <a class="text-dark" href="{% url 'main:activity_single' activity.slug %}">
-                    <div class="card-body">
-                        <p class="card-text">{{activity.description}}</p>
+    <div class="col-sm-4 mb-3 card-space d-flex justify-content-center">
+        <div class="w3-card-4 " style="width:300px">
+            <div class="card-header card-header bg-primary text-white">
+                <a href="{% url 'main:activity_single' activity.slug %}" >
+                    <h1>{{activity.name}}</h1>
+                </a>
+            </div>
+                    <div class="card-body p-1">
+                        <p class="card-text mb-1">{{activity.description}}</p> <! consider how to manage long description, truncate etc >
                         {% if activity.image != None %}
-                        <div>
-                            <img src="{{ activity.image.url }}" alt="{{activity.name}}" width="200" height="200">
+                        <div class="container">
+                            <div class="col" >
+                                    <img src="{{ activity.image.url }}" alt="{{activity.name}}" width="200" height="200" class="cover mx-auto d-block rounded">
+                            </div>
                         </div>
                         {% endif %}
-                            <div id="favourite-section"><a href="{% url 'account:favourite_add' activity.id %}"
-                                    class="btn btn-outline-primary">Remove</a></div>
-                            <form>
-                                    <p> add to programme: </p><input type="checkbox" id="check">
-                                    <div class="col-sm-6">
-                                        <div class="container">
-                                        <div class="column">
-                                            <p> reps:<p><input type="text" id="reps" name="reps">
-                                            <p> sets:</p><input type="text" id="sets" name="sets">
-                                        </div>
-                                        </div>
-                                    </div>
-                            </form>
                     </div>
-                </a>
+            <div class="card-footer bg-primary text-white p-1">
+                <form>
+                    <div class="container">
+                    <div class="row">
+                        <div class="d-flex justify-content-start p-1">
+                            <div class="input-group">
+                                <span class="input-group-text">Reps:</span>
+                                <textarea class="form-control"></textarea>
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-text">Sets:</span>
+                                <textarea class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-start p-1">
+                            <div class="input-group form-check-inline text-white">
+                                <span class="input-group-text text-left" for="check">Add:</span>
+                                <input class="form-check-input" type="checkbox" id="check">
+                            </div>
+                            <div id="favourite-section">
+                                <div class="btn btn-danger text-right outline-white text-white">
+                                    <a href="{% url 'account:favourite_add' activity.id %}">Unfavourite</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </form>
+            </div>
         </div>
   </div>
   {% endfor %}
