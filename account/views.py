@@ -8,14 +8,11 @@ from main.models import TherapyActivity
 from account.models import Favourite
 from django.template.loader import render_to_string
 from django.contrib.auth.decorators import login_required
-
-
-def create_programme(response):
-    form = UserTherapyActivityForm
-    return render(response, 'account/create_programme.html', {'form': form})
+from .forms import TherapyProgrammeForm
 
 def logged_out(response):
     return render(response, "main/logout_page.html")
+
 
 def register(response):
     if response.method =="POST":
@@ -83,3 +80,19 @@ def favourite_unfavourite(request):
 
 def logged_out(response):
     return render(response, "account/logout_page.html")
+
+
+def create_programme(request):
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = TherapyProgrammeForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            return HttpResponseRedirect('/index/')
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = TherapyProgrammeForm()
+
+    return render(request, 'create_programme.html', {'form': form})

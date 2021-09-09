@@ -38,13 +38,15 @@ img {
     {% for activity in new %}
     <div class="col-sm-4 mb-3 card-space d-flex justify-content-center">
         <div class="w3-card-4 " style="width:300px">
-            <div class="card-header card-header bg-primary text-white">
-                <a href="{% url 'main:activity_single' activity.slug %}" >
-                    <h1>{{activity.name}}</h1>
-                </a>
+            <div class="card-header card-header bg-primary text-white mb-2">
+                <div class="m">
+                    <a href="{% url 'main:activity_single' activity.slug %}" >
+                        <h1>{{activity.name}}</h1>
+                    </a>
+                </div>
             </div>
                     <div class="card-body p-1">
-                        <p class="card-text mb-1">{{activity.description}}</p> <! consider how to manage long description, truncate etc >
+                        <p class="card-text mx-2">{{activity.description}}</p> <! consider how to manage long description, truncate etc >
                         {% if activity.image != None %}
                         <div class="container">
                             <div class="col" >
@@ -54,7 +56,8 @@ img {
                         {% endif %}
                     </div>
             <div class="card-footer bg-primary text-white p-1">
-                <form action="/create_programme" method="post">
+                <form action="/create_programme" method="post" id="create_programme">
+                    {% csrf_token %}
                     <div class="container">
                     <div class="row">
                         <div class="d-flex justify-content-start p-1">
@@ -70,7 +73,7 @@ img {
                         <div class="d-flex justify-content-start p-1">
                             <div class="input-group form-check-inline text-white">
                                 <span class="input-group-text text-left" for="check">Add:</span>
-                                <input class="form-check-input" type="checkbox" id="check">
+                                <input class="form-check-input" type="checkbox" id="check" value="{{activity}}">
                             </div>
                             <div id="favourite-section">
                                 <div class="btn btn-danger text-right outline-white text-white">

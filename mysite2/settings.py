@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path, os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-import create.apps
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -43,7 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main.apps.MainConfig',
-    'create.apps.CreateConfig',
     'crispy_forms',
     'account.apps.AccountConfig',
     'recurrence',
