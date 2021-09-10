@@ -5,7 +5,7 @@ from django.conf import settings
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 from main.models import TherapyActivity
-from account.models import Favourite
+from account.models import UserFavourite
 from django.template.loader import render_to_string
 from django.contrib.auth.decorators import login_required
 from .forms import TherapyProgrammeForm
@@ -29,8 +29,8 @@ def register(response):
 
 @ login_required
 def favourite_list(request):
-    new = TherapyActivity.objects.filter(favourites=request.user)
-    context = {'new': new}
+    favourites = TherapyActivity.objects.filter(favourites=request.user)
+    context = {'favourites': favourites}
     return render(request,
                   'account/favourites.html',
                    context)
@@ -58,7 +58,7 @@ def favourite_unfavourite(request):
             activity.favourites.remove(user)
         else:
             activity.favourites.add(user)
-        favourite, created = Favourite.objects.get_or_create(user=user, therapy_activity_id=activity_id)#where is therapy_activity_id?
+        favourite, created = UserFavourite.objects.get_or_create(user=user, therapy_activity_id=activity_id)#where is therapy_activity_id?
     if not created:
         if favourite.value == 'Favourite':
             favourite.value = 'Unfavourite'
@@ -86,7 +86,7 @@ def create_programme(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
-        form = TherapyProgrammeForm(request.POST)
+        form = UserTherapyActivityForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
             return HttpResponseRedirect('/index/')
@@ -95,4 +95,4 @@ def create_programme(request):
     else:
         form = TherapyProgrammeForm()
 
-    return render(request, 'create_programme.html', {'form': form})
+    return render(request, 'account/create_programme.html', {'form': form})

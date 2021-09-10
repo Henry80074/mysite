@@ -9,7 +9,6 @@ from datetime import datetime
 
 
 class RegisterForm(UserCreationForm):
-    #email = forms.EmailField()
     class Meta:
         model = User
         fields = ["username", "password1", "password2"]
@@ -18,17 +17,13 @@ class RegisterForm(UserCreationForm):
 class UserTherapyActivityForm(ModelForm):
     class Meta:
         model = UserTherapyActivity
-        fields = ('therapy_activity', 'reps', 'user')
+        fields = ('therapy_activity', 'reps', 'sets')
 
 
 class TherapyProgrammeForm(ModelForm):
     class Meta:
-        model = TherapyActivity
-        fields = []
-
-    reps = forms.IntegerField(label="reps")
-    sets = forms.IntegerField(label="sets")
-
+        model = TherapyProgramme
+        fields = ['therapy_list', 'recurrences']
 
 #class TherapyProgramme(forms.Form):
  #   activities = forms.(label='Your name', max_length=100)
