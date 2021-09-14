@@ -64,19 +64,19 @@ img {
                     <div class="container">
                     <div class="row">
                         <div class="d-flex justify-content-start p-1">
-                            <div class="input-group" id="reps">
+                            <div class="input-group">
                                 <span class="input-group-text">Reps:</span>
-                                <textarea class="form-control reps"></textarea>
+                                <input class="form-control" id="reps">
                             </div>
-                            <div class="input-group" id="sets">
+                            <div class="input-group">
                                 <span class="input-group-text">Sets:</span>
-                                <textarea class="form-control sets"></textarea>
+                                <input class="form-control sets" id="sets">
                             </div>
                         </div>
                         <div class="d-flex justify-content-start p-1">
                             <div class="input-group form-check-inline text-white">
                                 <span class="input-group-text text-left" for="check">Add:</span>
-                                <input class="form-check-input add" type="checkbox" name="checkbox" value="{{activity.id}}" data-action="add">
+                                <input class="form-check-input add" type="checkbox" name="checkbox" value="{{activity.therapy_activity}}" data-action="add">
                             </div>
                             <div id="favourite-section">
                                 <div class="btn btn-danger text-right outline-white text-white">
@@ -94,7 +94,7 @@ img {
 </div>
 </div>
     <div class="container save-button d-flex justify-content-end p-3">
-        <button class="btn btn-success " type="submit" id="save">Save</button>
+        <button class="btn btn-success " type="submit" id="save" value="save">Save</button>
     </div>
 </form>
 <script type="text/javascript" src="{% static 'main/js/create_programme.js' %}"></script>

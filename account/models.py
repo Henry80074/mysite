@@ -16,13 +16,14 @@ class UserFavourite(models.Model):
     value = models.CharField(choices=Fav_CHOICES, max_length=11)
 
     def __str__(self):
-        return f"{self.user}-{self.post}-{self.value}"
+        return f"{self.user}-{self.value}"
 
 
 class UserTherapyActivity(models.Model):
-    therapy_activity = models.ForeignKey(UserFavourite, on_delete=models.CASCADE, default=None)
-    reps = models.IntegerField("reps", default=None)
-    sets = models.IntegerField("reps", default=None)
+    therapy_activity = models.ForeignKey(TherapyActivity, on_delete=models.CASCADE)
+    reps = models.IntegerField("reps", default=None, null=True, blank=True)
+    sets = models.IntegerField("reps", default=None, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
 
 
 class TherapyProgramme(models.Model):
