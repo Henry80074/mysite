@@ -7,5 +7,4 @@ urlpatterns = [
     path("favourite_unfavourite/", views.favourite_unfavourite, name="favourite_unfavourite"),
     path("favourite_add/<int:id>/", views.favourite_add, name="favourite_add"),
     path("create_programme/", views.create_user_therapy_activity, name="create-programme"),
-
     ]

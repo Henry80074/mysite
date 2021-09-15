@@ -76,26 +76,18 @@ def logged_out(response):
 
 
 def create_user_therapy_activity(request):
-    # if this is a POST request we need to process the form data
-
     user = request.user
+    print(user)
+
     if request.method == 'POST':
-        activity = request.POST.get('checkbox')
-        #activity = get_object_or_404(TherapyActivity, id=activity_id)
-        sets = request.POST.get("sets")
-        reps = request.POST.get("reps")
         form = UserTherapyActivityForm(request.POST)
-        user_therapy_activity, created = UserTherapyActivity.objects.get_or_create(sets=sets, reps=reps,
-                                                                                   therapy_activity=activity, user=user)
-        user_therapy_activity.save()
-
-        # create a form instance and populate it with data from the request:
-        # check whether it's valid:
         if form.is_valid():
-            return HttpResponseRedirect('/index/')
+            activity = request.POST.get('checkbox')
+            print("+++" + activity)
+            sets = request.POST.get("sets")
+            reps = request.POST.get("reps")
+            UserTherapyActivity.objects.create(sets=sets, reps=reps, therapy_activity=activity, user=request.user)
+        else:
+            print(form.errors)
 
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = UserTherapyActivityForm()
-
-        return render(request, 'account/favourite_list/', {'form': form})
+    return render(request, 'account/favourites.html', {'form': form})

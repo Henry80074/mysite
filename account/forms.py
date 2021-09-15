@@ -17,7 +17,7 @@ class RegisterForm(UserCreationForm):
 class UserTherapyActivityForm(ModelForm):
     class Meta:
         model = UserTherapyActivity
-        fields = ('therapy_activity', 'reps', 'sets', 'user')
+        fields = ['reps', 'sets']
 
 
 class TherapyProgrammeForm(ModelForm):
