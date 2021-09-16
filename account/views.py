@@ -1,9 +1,10 @@
 from .forms import RegisterForm, UserTherapyActivityForm
+from django.forms import formset_factory
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
 from main.models import TherapyActivity
-from account.models import UserFavourite, UserTherapyActivity
+from account.models import UserTherapyActivity
 from django.contrib.auth.decorators import login_required
-
+from django.views.generic.edit import CreateView
 
 def logged_out(response):
     return render(response, "main/logout_page.html")
@@ -52,8 +53,8 @@ def favourite_unfavourite(request):
         else:
             activity.favourites.add(user)
 # where is therapy_activity_id?
-        favourite, created = UserFavourite.objects.get_or_create(user=user,
-                                                                 therapy_activity_id=activity_id)
+        favourite, created = UserTherapyActivity.objects.get_or_create(user=user,
+                                                                       therapy_activity_id=activity_id)
 
     if not created:
         if favourite.value == 'Favourite':
@@ -82,12 +83,27 @@ def create_user_therapy_activity(request):
     if request.method == 'POST':
         form = UserTherapyActivityForm(request.POST)
         if form.is_valid():
-            activity = request.POST.get('checkbox')
-            print("+++" + activity)
-            sets = request.POST.get("sets")
+            user = request.user
+            activity_id = request.POST.get('checkbox')
+            activity = get_object_or_404(TherapyActivity, id=activity_id)
+            sets = request.POST.get("sets") #these are returning none??
             reps = request.POST.get("reps")
-            UserTherapyActivity.objects.create(sets=sets, reps=reps, therapy_activity=activity, user=request.user)
+            print(reps)
+            print(sets)
+            UserTherapyActivity.objects.create(sets=sets, reps=reps, therapy_activity=activity, user=user)
         else:
             print(form.errors)
 
     return render(request, 'account/favourites.html', {'form': form})
+
+
+class CreateTherapyProgramme(CreateView):
+
+    def get_form_kwargs(self):
+        """ Passes the request object to the form class.
+         This is necessary to only display members that belong to a given user"""
+
+        kwargs = super(CreateTherapyProgramme, self).get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs
+

@@ -1,7 +1,7 @@
 from django.contrib.auth import login, authenticate
 from django.forms import ModelForm
 from django import forms
-from .models import UserTherapyActivity, TherapyProgramme #therpay_programme contaisn the recurrence fields
+from .models import UserTherapyActivity, TherapyProgramme  #therapy_programme contains the recurrence fields
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from main.models import TherapyActivity
@@ -21,9 +21,22 @@ class UserTherapyActivityForm(ModelForm):
 
 
 class TherapyProgrammeForm(ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        """ Grants access to the request object so that only activities of the current user
+        are given as options"""
+
+        self.request = kwargs.pop('request')
+        super(TherapyProgrammeForm, self).__init__(*args, **kwargs)
+        self.fields['therapy_list'].queryset = UserTherapyActivity.objects.filter(
+            user=self.request.user)
+
     class Meta:
         model = TherapyProgramme
-        fields = ['therapy_list', 'recurrences']
+        fields = ['therapy_list']
+
+    therapy_list = forms.ModelMultipleChoiceField(queryset=None)
+
 
 #class TherapyProgramme(forms.Form):
  #   activities = forms.(label='Your name', max_length=100)
