@@ -22,20 +22,21 @@ class UserTherapyActivityForm(ModelForm):
 
 class TherapyProgrammeForm(ModelForm):
 
-    def __init__(self, *args, **kwargs):
-        """ Grants access to the request object so that only activities of the current user
-        are given as options"""
+    #def __init__(self, *args, **kwargs):
+        #""" Grants access to the request object so that only activities of the current user
+        #are given as options"""
 
-        self.request = kwargs.pop('request')
-        super(TherapyProgrammeForm, self).__init__(*args, **kwargs)
-        self.fields['therapy_list'].queryset = UserTherapyActivity.objects.filter(
-            user=self.request.user)
+        #self.request = kwargs.pop('request')
+        #super(TherapyProgrammeForm, self).__init__(*args, **kwargs)
+        #self.fields['therapy_list'].queryset = UserTherapyActivity.objects.filter(
+            #user=self.request.user)
 
     class Meta:
         model = TherapyProgramme
-        fields = ['therapy_list']
+        fields = ['therapy_list', 'user']
 
-    therapy_list = forms.ModelMultipleChoiceField(queryset=None)
+    #therapy_list = forms.ModelMultipleChoiceField(queryset=None)
+    #recurrences =
 
 
 #class TherapyProgramme(forms.Form):

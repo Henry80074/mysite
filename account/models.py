@@ -22,8 +22,9 @@ class UserTherapyActivity(models.Model):
 
 
 class TherapyProgramme(models.Model):
-    therapy_list = models.ManyToManyField(UserTherapyActivity)
-    #recurrences = recurrence.fields.RecurrenceField()
+    therapy_list = models.ManyToManyField(UserTherapyActivity, default=None, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None, null=True, blank=True)
+   # recurrences = recurrence.fields.RecurrenceField(default=None, null=True, blank=True)
 
 
 

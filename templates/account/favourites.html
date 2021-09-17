@@ -36,7 +36,7 @@ img {
 </style>
 {% load static %}
 <body>
-<form action="/account/create_programme/" method="post" id="create_programme">
+<form action="/account/create_programme/" method="post" id="create_programme" enctype="multipart/form-data">
         {% csrf_token %}
 <div class="container">
 <div class="row">
@@ -66,11 +66,11 @@ img {
                         <div class="d-flex justify-content-start p-1">
                             <div class="input-group">
                                 <span class="input-group-text">Reps:</span>
-                                <input class="form-control" id="reps">
+                                <input class="form-control reps" name="{{activity.id}}reps">
                             </div>
                             <div class="input-group">
                                 <span class="input-group-text">Sets:</span>
-                                <input class="form-control sets" id="sets">
+                                <input class="form-control sets" name="{{activity.id}}sets">
                             </div>
                         </div>
                         <div class="d-flex justify-content-start p-1">
@@ -94,10 +94,9 @@ img {
 </div>
 </div>
     <div class="container save-button d-flex justify-content-end p-3">
-        <button class="btn btn-success " type="submit" id="save" value="save">Save</button>
+        <button class="btn btn-success " type="submit" id="save" value="save">Add to programme</button>
     </div>
 </form>
-<script type="text/javascript" src="{% static 'main/js/create_programme.js' %}"></script>
 </body>
 {% endblock %}
 
