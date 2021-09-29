@@ -99,18 +99,19 @@ def update_user_therapy_activity(request):
 def create_user_therapy_activity(request):
 
     if request.method == 'POST':
-        if "save" in request.POST:
-            form = UserTherapyActivityForm(request.POST)
-            if form.is_valid():
-                user = request.user
-                activity_id_list = request.POST.getlist('checkbox')
-                for activity_id in activity_id_list:
-                    activity = get_object_or_404(TherapyActivity, id=activity_id)
-                    sets = request.POST[activity_id + 'sets']
-                    reps = request.POST[activity_id + 'reps']
-                    UserTherapyActivity.objects.create(sets=sets, reps=reps, therapy_activity=activity, user=user, value="Favourite")
-            else:
-                print(form.errors)
+        print("post")
+        form = UserTherapyActivityForm(request.POST)
+        if form.is_valid():
+            user = request.user
+            activity_id_list = request.POST.getlist('checkbox')
+            for activity_id in activity_id_list:
+                activity = get_object_or_404(TherapyActivity, id=activity_id)
+                sets = request.POST[activity_id + 'sets']
+                reps = request.POST[activity_id + 'reps']
+                print("creating")
+                UserTherapyActivity.objects.create(sets=sets, reps=reps, therapy_activity=activity, user=user, value="Favourite")
+        else:
+            print(form.errors)
 
     return redirect('/account/create_therapy_programme/')
 
@@ -140,7 +141,19 @@ def CreateTherapyProgramme(request): # consider reworking the models to make The
             for activity_id in activity_id_list: #this is inefficient code that requires multiple database queries, consider bulk_update
                 sets = request.POST[activity_id + 'sets']
                 reps = request.POST[activity_id + 'reps']
-                UserTherapyActivity.objects.update(sets=sets, reps=reps)
+                UserTherapyActivity.objects.select_for_update().filter(id=activity_id).update(sets=sets, reps=reps)
+
+        else:
+            print(form.errors)
+
+    if request.method == 'POST' and 'update-this' in request.POST:
+        form = UserTherapyActivityForm(request.POST) #work with checkboxes to make them useful when creating programme.
+        if form.is_valid():
+            activity_id = request.POST.get("update-this")
+            print(activity_id)
+            sets = request.POST[activity_id + 'sets']
+            reps = request.POST[activity_id + 'reps']
+            UserTherapyActivity.objects.select_for_update().filter(id=activity_id).update(sets=sets, reps=reps)
 
         else:
             print(form.errors)
